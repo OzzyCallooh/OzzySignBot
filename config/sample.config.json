@@ -1,0 +1,48 @@
+{
+	"telegram": {
+		"token__COMMENT__": "The Telegram bot token (from the BotFather) goes here.",
+		"token": "",
+		"chat_id__COMMENT__": "This chat id is where the bot uploads stickers before answering inline queries.",
+		"chat_id": "",
+
+		"use_webhook__COMMENT__": "When false, bot will polling using the /getUpdates API endpoint instead.",
+		"use_webhook": false,
+		"webhook": {
+			"host__COMMENT__": "Host of the bot (can be IP address)",
+			"host": "ozzysignbot.website.com",
+			"internal_post__COMMENT__": "Port to use for bot internal server. Webhook always uses 443 (route traffic using Nginx/Apache).",
+			"internal_port": 443,
+			"key__COMMENT__": "Path to SSL private key.",
+			"key": "/etc/nginx/Telegram/private.key",
+			"cert__COMMENT__": "Path to SSL cert.",
+			"cert": "/etc/nginx/Telegram/cert.pem"
+		}
+	},
+
+	"signgen": {
+		"template__COMMENT__": "The base sign sticker",
+		"template": "resources/template.png",
+		"template_mask__COMMENT__": "A mask of just the sign ",
+		"template_mask": "resources/template-mask.png",
+		"geometry": {
+			"font_sizes__COMMENT__": "Font size according to # of lines of text",
+			"font_sizes": [70, 70, 60, 50, 42],
+			"y_offset__COMMENT__": "Vertical pixel offset according to # of lines of text",
+			"y_offset": [-6, 0, 6, 12, 18],
+			"h_scale__COMMENT__": "By what factor should the text be scaled horizontally?",
+			"h_scale": 0.8,
+			"rotation__COMMENT__": "How many degrees should the text be rotated?",
+			"rotation": 9,
+			"max_chars_per_line__COMMENT__": "The maximum number of characters per line of text on signs before wrapping",
+			"max_chars_per_line": 9
+		},
+		"colors": {
+			"sign_bg__COMMENT__": "RGBA background color of the sign",
+			"sign_bg": [253, 221, 145, 255],
+			"text__COMMENT__": "RGBA color of the text",
+			"text": [165, 50, 0, 255],
+			"text_stroke__COMMENT__": "RGBA color of the text stroke",
+			"text_stroke": [0, 0, 0, 255]
+		}
+	}
+}
