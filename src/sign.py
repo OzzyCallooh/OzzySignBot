@@ -3,7 +3,7 @@ import sys
 
 from config import config
 
-font_file = 'FRAMDCN.TTF'
+font_file = config['signgen']['font']
 fonts = [None] + [ImageFont.truetype(font_file, size) for size in config['signgen']['geometry']['font_sizes']]
 y_offset = [None] + config['signgen']['geometry']['y_offset']
 

@@ -24,6 +24,8 @@
 		"template": "resources/template.png",
 		"template_mask__COMMENT__": "A mask of just the sign ",
 		"template_mask": "resources/template-mask.png",
+		"font__COMMENT__": "The font to use",
+		"font": "resources/FRAMDCN.TTF",
 		"geometry": {
 			"font_sizes__COMMENT__": "Font size according to # of lines of text",
 			"font_sizes": [70, 70, 60, 50, 42],
