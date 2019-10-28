@@ -41,3 +41,9 @@ python3 src/signbot.py config/sample.config.json
 ```
 
 The bot also supports webhooks. See the sample configuration for more information.
+
+## License
+
+OzzySignBot is licensed under [CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/). The text can be found in [license.txt](license.txt).
+
+![CC BY-NC-SA](https://licensebuttons.net/l/by-nc-sa/3.0/88x31.png)
