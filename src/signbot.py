@@ -1,8 +1,8 @@
 import logging
 import random
 import os
+from io import BytesIO
 from uuid import uuid4
-from werkzeug import secure_filename
 
 from telegram import  InlineQueryResultArticle, ParseMode, InputTextMessageContent,  InlineQueryResultCachedSticker
 from telegram.ext import Updater, CommandHandler, InlineQueryHandler
@@ -16,9 +16,6 @@ CHAT_ID = config['telegram']['chat_id']
 
 def start(bot, update):
 	update.message.reply_text('Hi! Type /sign followed by some text.')
-
-def get_temporary_filename(sign_text):
-	return 'tmp/' + secure_filename('sign-' + str(random.randint(10000,99999)) + '-' + (sign_text) + '.png')
 
 def auto_line_break(sign_text):
 	if '\n' in sign_text:
@@ -44,14 +41,16 @@ def auto_line_break(sign_text):
 def sign(bot, update, args):
 	sign_text = update.message.text[6:]
 	sign_text = auto_line_break(sign_text)
-	filename = get_temporary_filename(sign_text)
-	create_sign_sticker(sign_text, filename)
-	with open(filename, 'rb') as f:
-		try:
-			msg = update.message.reply_sticker(f)
-		except Exception as e:
-			logging.exception(e, exc_info=True)
-	os.remove(filename)
+
+	# Create a temporary buffer to hold the sticker
+	fp = BytesIO()
+
+	create_sign_sticker(sign_text, fp)
+
+	# Seek to the beginning to be ready for reading
+	fp.seek(0)
+
+	update.message.reply_sticker(fp)
 
 def inlinequery(bot, update):
 	query = update.inline_query.query
@@ -61,20 +60,25 @@ def inlinequery(bot, update):
 
 	sign_text = query
 	sign_text = auto_line_break(sign_text)
-	filename = get_temporary_filename(sign_text)
-	create_sign_sticker(sign_text, filename)
-	file_id = None
-	with open(filename, 'rb') as f:
-		msg = None
-		try:
-			msg = bot.send_sticker(CHAT_ID, f)
-		except Exception as e:
-			logging.exception(e, exc_info=True)
-			pass
-		if not msg:
-			update.inline_query.answer([])
-		file_id = msg.sticker.file_id
-	os.remove(filename)
+
+	# Create a temporary buffer to hold the sticker
+	fp = BytesIO()
+
+	create_sign_sticker(sign_text, fp)
+
+	# Seek to the beginning to be ready for reading
+	fp.seek(0)
+
+	msg = None
+	try:
+		msg = bot.send_sticker(CHAT_ID, fp)
+	except Exception as e:
+		logging.exception(e, exc_info=True)
+
+	if not msg:
+		update.inline_query.answer([])
+
+	file_id = msg.sticker.file_id
 
 	if file_id:
 		update.inline_query.answer([

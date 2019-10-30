@@ -10,7 +10,7 @@ y_offset = [None] + config['signgen']['geometry']['y_offset']
 im_template = Image.open(config['signgen']['template']).convert('RGBA')
 im_template_mask = Image.open(config['signgen']['template_mask']).convert('L').resize(im_template.size)
 
-def create_sign_sticker(text, filename, rotation=9, h_scale=.8, text_color=(165, 50, 0, 255),
+def create_sign_sticker(text, buf, rotation=9, h_scale=.8, text_color=(165, 50, 0, 255),
                         outline_color=(0, 0, 0, 255), sign_bg_color=(253, 221, 145, 255)):
 	n_lines = len(text.split('\n'))
 	if n_lines > 5:
@@ -48,12 +48,13 @@ def create_sign_sticker(text, filename, rotation=9, h_scale=.8, text_color=(165,
 
 	# now save
 	result = Image.composite(im_text, im_template, im_template_mask)
-	result.save(filename)
+	result.save(buf)
 
 def main():
 	if len(sys.argv) >= 2:
-		create_sign_sticker(sys.argv[1].replace('\\n', '\n'), 'out.png')
-		print('Saved to out.png')
+		with open('out.png', 'wb') as f:
+			create_sign_sticker(sys.argv[2].replace('\\n', '\n'), f)
+			print('Saved to out.png')
 	else:
 		print('Usage: python {} sign-text'.format(sys.argv[0]))
 
