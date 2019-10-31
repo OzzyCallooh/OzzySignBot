@@ -48,7 +48,7 @@ def create_sign_sticker(text, buf, rotation=9, h_scale=.8, text_color=(165, 50, 
 
 	# now save
 	result = Image.composite(im_text, im_template, im_template_mask)
-	result.save(buf)
+	result.save(buf, format="PNG")
 
 def main():
 	if len(sys.argv) >= 2:
