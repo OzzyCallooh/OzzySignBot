@@ -16,7 +16,7 @@ The artist that created the original template sticker is [@LoboWupp](https://t.m
 
 ## How it Works
 
-It uses [Python-Telegram-Bot](https://python-telegram-bot.org/), [Pillow](https://pillow.readthedocs.io/) and [werkzeug](https://palletsprojects.com/p/werkzeug/). It first renders text on an image, then squeezes it, rotates it, and composes it onto a [template](resources/template.png) using a [mask](resources/template-mask.png). For inline queries, it sends the sticker to a chat (in config, `telegram.chat_id`) in order to upload it before replying to the inline query.
+It uses [Python-Telegram-Bot](https://python-telegram-bot.org/) and [Pillow](https://pillow.readthedocs.io/). It first renders text on an image, then squeezes it, rotates it, and composes it onto a [template](resources/template.png) using a [mask](resources/template-mask.png). For inline queries, it sends the sticker to a chat (in config, `telegram.chat_id`) in order to upload it before replying to the inline query.
 
 ## Dependencies
 
@@ -24,7 +24,6 @@ This bot runs on Python 3.4+ and requires the following libraries:
 
 *	[Pillow](https://pillow.readthedocs.io/) for creating sticker images
 *	[Python-Telegram-Bot](https://python-telegram-bot.org/) to interface with the [Telegram bot API](https://core.telegram.org/bots/api)
-*	[werkzeug](https://palletsprojects.com/p/werkzeug/) for `werkzeug.secure_filename`
 
 You can install all the dependencies using [pip](https://pypi.org/project/pip/) and the provided [requirements.txt](requirements.txt) file.
 
