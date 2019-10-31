@@ -14,7 +14,7 @@ from sign import create_sign_sticker
 TOKEN = config['telegram']['token']
 CHAT_ID = config['telegram']['chat_id']
 
-def start(bot, update):
+def start(update, context):
 	update.message.reply_text('Hi! Type /sign followed by some text.')
 
 def auto_line_break(sign_text):
@@ -38,7 +38,7 @@ def auto_line_break(sign_text):
 	#print(repr(lines))
 	return '\n'.join(lines[:5])
 
-def sign(bot, update, args):
+def sign(update, context):
 	sign_text = update.message.text[6:]
 	sign_text = auto_line_break(sign_text)
 
@@ -52,7 +52,7 @@ def sign(bot, update, args):
 
 	update.message.reply_sticker(fp)
 
-def inlinequery(bot, update):
+def inlinequery(update, context):
 	query = update.inline_query.query
 	if len(query) == 0:
 		update.inline_query.answer([])
@@ -71,7 +71,7 @@ def inlinequery(bot, update):
 
 	msg = None
 	try:
-		msg = bot.send_sticker(CHAT_ID, fp)
+		msg = context.bot.send_sticker(CHAT_ID, fp)
 	except Exception as e:
 		logging.exception(e, exc_info=True)
 
@@ -89,7 +89,8 @@ def inlinequery(bot, update):
 	else:
 		update.inline_query.answer([])
 
-def error_callback(bot, update, error):
+def error_callback(update, context):
+	error = context.error
 	try:
 		raise error
 	except Unauthorized:
@@ -115,9 +116,9 @@ def main():
 	logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
 	                    level=logging.INFO)
 
-	updater = Updater(TOKEN)
+	updater = Updater(TOKEN, use_context=True)
 	updater.dispatcher.add_handler(CommandHandler('start', start))
-	updater.dispatcher.add_handler(CommandHandler('sign', sign, pass_args=True))
+	updater.dispatcher.add_handler(CommandHandler('sign', sign))
 	updater.dispatcher.add_handler(InlineQueryHandler(inlinequery))
 	updater.dispatcher.add_error_handler(error_callback)
 
